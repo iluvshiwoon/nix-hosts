@@ -35,8 +35,7 @@ in
           You cannot update it even if you run the Lazy command, because it binds read-only.
           You need to remove lazy-lock.json before enabling this option if `mergeLazyLock` is set.
         '';
-        mergeLazyLock = mkEnableOption ''
-          Merges the managed lazy-lock.json with the existing one under $XDG_CONFIG_HOME/nvim if its hash has changed on activation.
+        mergeLazyLock = mkEnableOption '' Merges the managed lazy-lock.json with the existing one under $XDG_CONFIG_HOME/nvim if its hash has changed on activation.
           Upstream package version changes have high priority.
           This means changes to lazy-lock.json in the config directory (likely due to installing package) will be preserved.
           In other words, it achieves environment consistency while remaining adaptable to changes.
@@ -144,17 +143,17 @@ in
       ];
       xdg.configFile =
         {
-          "nvim/init.lua".source = ../config/neovim/init.lua;
-          "nvim/lua".source = ../config/neovim/lua;
-          "nvim/lsp".source = ../config/neovim/lsp;
-          "nvim/after".source = ../config/neovim/after;
+          "nvim/init.lua".source = ../../shared/config/neovim/init.lua;
+          "nvim/lua".source = ../../shared/config/neovim/lua;
+          "nvim/lsp".source = ../../shared/config/neovim/lsp;
+          "nvim/after".source = ../../shared/config/neovim/after;
         }
         // optionalAttrs cfg.bindLazyLock {
-          "nvim/lazy-lock.json".source = ../config/neovim/lazy-lock.json;
+          "nvim/lazy-lock.json".source = ../../shared/config/neovim/lazy-lock.json;
         }
         // optionalAttrs cfg.mergeLazyLock {
           "nvim/lazy-lock.nix.json" = {
-            source = ../config/neovim/lazy-lock.json;
+            source = ../../shared/config/neovim/lazy-lock.json;
             onChange = ''
               if [ -f ${config.xdg.configHome}/nvim/lazy-lock.json ]; then
                 tmp=$(mktemp)
@@ -172,6 +171,9 @@ in
       home = {
         packages = [
           pkgs.ripgrep
+	pkgs.nixd
+	pkgs.lua-language-server
+
         ];
         shellAliases = optionalAttrs (cfg.setBuildEnv && (versionOlder config.home.stateVersion "24.05")) {
           nvim = concatStringsSep " " buildEnv + " nvim";

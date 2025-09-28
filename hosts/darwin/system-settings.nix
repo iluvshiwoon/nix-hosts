@@ -2,13 +2,13 @@
   security.pam.services.sudo_local.touchIdAuth = true;
 
   system = {
-  	primaryUser = "${username}";
-	  activationScripts.screenshots.text = ''
-		  mkdir -p "/Users/${username}/Pictures/Screenshots"
-		  chown ${username} "/Users/${username}/Pictures/Screenshots"
-		  '';
+    primaryUser = "${username}";
+    activationScripts.screenshots.text = ''
+      mkdir -p "/Users/${username}/Pictures/Screenshots"
+      chown ${username} "/Users/${username}/Pictures/Screenshots"
+    '';
 
-	  defaults = {
+    defaults = {
       dock = {
         autohide = true;
         autohide-delay = 0.4;
@@ -27,10 +27,9 @@
         wvous-tr-corner = 1; #disabled
       };
 
-      
       screencapture = {
         disable-shadow = true;
-	location = "/Users/${username}/Pictures/Screenshots";
+        location = "/Users/${username}/Pictures/Screenshots";
       };
 
       finder = {
@@ -47,7 +46,8 @@
         ShowPathbar = true;
         ShowStatusBar = true;
       };
-      CustomUserPreferences = { # question about user / system wide for everythin darwin does as it's seems to be changing rn on github
+      CustomUserPreferences = {
+        # question about user / system wide for everythin darwin does as it's seems to be changing rn on github
         "com.apple.finder" = {
           "FinderSpawnTab" = true; # cmd + click open tab (default)
         };
@@ -55,8 +55,7 @@
       NSGlobalDomain = {
         _HIHideMenuBar = true;
       };
-
     };
-	  stateVersion = 4;
+    stateVersion = 4;
   };
 }

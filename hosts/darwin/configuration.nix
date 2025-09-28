@@ -9,13 +9,12 @@
   pkgs,
   ...
 }: {
-
   imports = [
     ./system-settings.nix
-    ];
+  ];
   # ] ++ (builtins.attrValues outputs.darwinModules); # list: value of attr in set
 
-ids.gids.nixbld = 350;
+  ids.gids.nixbld = 350;
 
   nixpkgs = {
     # You can add overlays here
@@ -61,7 +60,6 @@ ids.gids.nixbld = 350;
   # Install system-wide packages
   environment.systemPackages = with pkgs; [
     git
-    vim
   ];
   homebrew = {
     enable = true;
@@ -95,7 +93,7 @@ ids.gids.nixbld = 350;
 
     # `brew install`
     brews = [
-    "cmake"
+      "cmake"
       "pipx"
       "wget" # download tool
       # "curl" # no not install curl via nixpkgs, it's not working well on macOS!
@@ -111,7 +109,7 @@ ids.gids.nixbld = 350;
       "zen"
       "steam"
       "tor-browser"
-	"iluvshiwoon/homebrew-additional/ryujinx"
+      "iluvshiwoon/homebrew-additional/ryujinx"
     ];
   };
 

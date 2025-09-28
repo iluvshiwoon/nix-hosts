@@ -3,9 +3,11 @@
   inputs,
   pkgs,
   lib,
+  username,
+  hostname,
   ...
 }: let
-  user = "kershuen";
+  user = "${username}";
   keys = ["ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOk8iAnIaa1deoc7jw8YACPNVka1ZFJxhnU4G74TmS+p"];
 in {
   # Start with this simple test
@@ -69,7 +71,7 @@ in {
   # Per-interface useDHCP will be mandatory in the future, so this generated config
   # replicates the default behaviour.
   networking = {
-    hostName = "aarch64-vm"; # Define your hostname.
+    hostName = "${hostname}"; # Define your hostname.
     useDHCP = false;
     interfaces."enp0s1".useDHCP = true;
   };
@@ -198,16 +200,9 @@ in {
     noto-fonts-emoji
   ];
 
-  
- environment.systemPackages = with pkgs; [
-	clang
-	clangStdenv
-	clang-tools
-	gnumake
-
-
-   git
-];
+  environment.systemPackages = with pkgs; [
+    git
+  ];
 
   system.stateVersion = "21.05"; # Don't change this
 }
