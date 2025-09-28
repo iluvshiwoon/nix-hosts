@@ -234,6 +234,22 @@
         "type": "github"
       }
     },
+    "homebrew-additional": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1753561928,
+        "narHash": "sha256-fkDotjzVDdNB85zNK29NF9RO+H6DKHJA+9uom7++n3U=",
+        "owner": "iluvshiwoon",
+        "repo": "homebrew-additional",
+        "rev": "0c486afa39b93946b72971ec85964e535af003fa",
+        "type": "github"
+      },
+      "original": {
+        "owner": "iluvshiwoon",
+        "repo": "homebrew-additional",
+        "type": "github"
+      }
+    },
     "homebrew-cask": {
       "flake": false,
       "locked": {
@@ -412,6 +428,7 @@
         "darwin": "darwin",
         "disko": "disko",
         "home-manager": "home-manager",
+        "homebrew-additional": "homebrew-additional",
         "homebrew-cask": "homebrew-cask",
         "homebrew-core": "homebrew-core",
         "lix-module": "lix-module",

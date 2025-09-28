@@ -40,6 +40,11 @@
       url = "github:homebrew/homebrew-core";
       flake = false;
     };
+    homebrew-additional = {
+    	url = "github:iluvshiwoon/homebrew-additional";
+	flake = false;
+    };
+
     homebrew-cask = {
       url = "github:homebrew/homebrew-cask";
       flake = false;
@@ -139,6 +144,7 @@
                 taps = {
                   "homebrew/homebrew-core" = inputs.homebrew-core;
                   "homebrew/homebrew-cask" = inputs.homebrew-cask;
+		  "iluvshiwoon/homebrew-additional" = inputs.homebrew-additional;
                 };
                 mutableTaps = false;
                 autoMigrate = true;

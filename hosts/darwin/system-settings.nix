@@ -1,14 +1,14 @@
 {username, ...}: {
-  security.pam.enableSudoTouchIdAuth = true;
-
-  myModules.screenshots = {
-    enable = true;
-    path = "/Users/kershuenlee/Pictures/Screenshots";
-    usernameForPath = "kershuenlee";
-  };
+  security.pam.services.sudo_local.touchIdAuth = true;
 
   system = {
-    defaults = {
+  	primaryUser = "${username}";
+	  activationScripts.screenshots.text = ''
+		  mkdir -p "/Users/${username}/Pictures/Screenshots"
+		  chown ${username} "/Users/${username}/Pictures/Screenshots"
+		  '';
+
+	  defaults = {
       dock = {
         autohide = true;
         autohide-delay = 0.4;
@@ -27,6 +27,7 @@
         wvous-tr-corner = 1; #disabled
       };
 
+      
       screencapture = {
         disable-shadow = true;
 	location = "/Users/${username}/Pictures/Screenshots";
@@ -54,6 +55,8 @@
       NSGlobalDomain = {
         _HIHideMenuBar = true;
       };
+
     };
+	  stateVersion = 4;
   };
 }

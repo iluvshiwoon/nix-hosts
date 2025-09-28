@@ -12,20 +12,15 @@
 
   imports = [
     ./system-settings.nix
-  ] ++ (builtins.attrValues outputs.darwinModules); # list: value of attr in set
+    ];
+  # ] ++ (builtins.attrValues outputs.darwinModules); # list: value of attr in set
 
-system.activationScripts.screenshots.text = ''
-	mkdir -p "/Users/${username}/Pictures/Screenshots"
-	chown ${username} "/Users/${username}/Pictures/Screenshots"
-''
-;
+ids.gids.nixbld = 350;
+
   nixpkgs = {
     # You can add overlays here
     overlays = [
       # Add overlays your own flake exports (from overlays and pkgs dir):
-      outputs.overlays.additions
-      outputs.overlays.modifications
-      outputs.overlays.unstable-packages
     ];
     # Configure your nixpkgs instance
     config = {
@@ -96,10 +91,7 @@ system.activationScripts.screenshots.text = ''
       # Bitwarden = 1352778147;
     };
 
-    taps = [
-      #"homebrew/brew"
-      "iluvshiwoon/homebrew-additional"
-    ];
+    taps = builtins.attrNames config.nix-homebrew.taps;
 
     # `brew install`
     brews = [
@@ -119,15 +111,12 @@ system.activationScripts.screenshots.text = ''
       "zen"
       "steam"
       "tor-browser"
-        "iluvshiwoon/additional/ryujinx"
+	"iluvshiwoon/homebrew-additional/ryujinx"
     ];
   };
 
   # Configure shell - ZSH comes by default on macOS
   programs.zsh.enable = true;
-
-  # Auto upgrade nix package and the daemon service
-  services.nix-daemon.enable = true;
 
   # Create /etc/zshrc that loads the nix-darwin environment
   programs.zsh.enableCompletion = true;
@@ -141,5 +130,4 @@ system.activationScripts.screenshots.text = ''
 
   # Used for backwards compatibility, please read the changelog before changing.
   # $ darwin-rebuild changelog
-  system.stateVersion = 4;
 }
