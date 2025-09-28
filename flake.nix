@@ -66,10 +66,10 @@
     machines = {
       macbook = {
         system = "aarch64-darwin";
-        username = "kershuen";
-        hostname = "macbook";
+        username = "kershuenlee";
+        hostname = "Kers-MacBook-Pro";
         type = "darwin";
-        hostPath = "hosts/macbook";
+        hostPath = "hosts/darwin";
       };
       school = {
         system = "x86_64-linux"; 
