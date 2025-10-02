@@ -18,6 +18,8 @@
   home.packages = with pkgs; [
     nix-prefetch-git
     fzf
+    cmake
+    clang
   ] ++ lib.optionals (!pkgs.stdenv.isDarwin) [];
 
   home.stateVersion = "25.05";

@@ -170,10 +170,9 @@ in
         };
       home = {
         packages = [
-          pkgs.ripgrep
+        pkgs.ripgrep
 	pkgs.nixd
 	pkgs.lua-language-server
-
         ];
         shellAliases = optionalAttrs (cfg.setBuildEnv && (versionOlder config.home.stateVersion "24.05")) {
           nvim = concatStringsSep " " buildEnv + " nvim";

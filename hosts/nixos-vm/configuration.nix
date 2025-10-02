@@ -202,6 +202,7 @@ in {
 
   environment.systemPackages = with pkgs; [
     git
+    vim
   ];
 
   system.stateVersion = "21.05"; # Don't change this

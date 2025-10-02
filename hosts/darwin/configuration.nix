@@ -60,6 +60,7 @@
   # Install system-wide packages
   environment.systemPackages = with pkgs; [
     git
+    vim
   ];
   homebrew = {
     enable = true;
