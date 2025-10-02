@@ -16,6 +16,7 @@ in {
     # ../modules/shared
   ];
 
+programs.ssh.startAgent = true;
   boot = {
     loader = {
       systemd-boot = {

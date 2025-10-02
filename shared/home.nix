@@ -47,6 +47,9 @@
     };
 
     initContent = let zshInitExtra = lib.mkBefore ''
+	export PATH=~/.config/emacs/bin:$PATH
+      DISABLE_MAGIC_FUNCTIONS=true
+      export "MICRO_TRUECOLOR=1"
       eval "$(zoxide init --cmd cd zsh)"
     ''; zshInit = ''
       flakify () {
