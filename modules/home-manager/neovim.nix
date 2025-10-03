@@ -170,6 +170,7 @@ in
         };
       home = {
         packages = [
+	pkgs.lua54Packages.jsregexp
         pkgs.ripgrep
 	pkgs.nixd
 	pkgs.lua-language-server
