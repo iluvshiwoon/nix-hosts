@@ -2,7 +2,12 @@
 return {
   -- A snippet that expands the trigger "hi" into the string "Hello, world!".
   require("luasnip").snippet(
-    { trig = "hi" },
+    { 
+      trig = "ho" ,
+      regTrig=false,
+      priority=100,
+      snippetType="autosnippet"
+    },
     { t("Hello, world!") }
   ),
 

@@ -31,6 +31,7 @@ in {
       theme = "kanso-pearl";
       clipboard-read = "allow";
       clipboard-write = "allow";
+      clipboard-paste-protection = "false";
     };
   };
 }
