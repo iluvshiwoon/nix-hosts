@@ -8,7 +8,6 @@
   ...
 }: let
   user = "${username}";
-  keys = ["ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOk8iAnIaa1deoc7jw8YACPNVka1ZFJxhnU4G74TmS+p"];
 in {
   # Start with this simple test
   imports = [
@@ -168,11 +167,11 @@ programs.ssh.startAgent = true;
         "docker"
       ];
       shell = pkgs.zsh;
-      openssh.authorizedKeys.keys = keys;
+      # openssh.authorizedKeys.keys = keys;
     };
 
     root = {
-      openssh.authorizedKeys.keys = keys;
+      # openssh.authorizedKeys.keys = keys;
     };
   };
 

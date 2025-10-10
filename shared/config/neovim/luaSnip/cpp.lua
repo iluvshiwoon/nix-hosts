@@ -6,34 +6,32 @@ local f = ls.function_node
 local fmt = require("luasnip.extras.fmt").fmt
 
 return {
-	s({
-		trig = "cl",
-		wordTrig = true,
-		snippetType = "autosnippet"
-	}, 
-	fmt([[
-	class {} {{
-		private:
-			{}
-
-		public:
-			{}();
-			{}(const {}& other);
-			{}& operator=(const {}& other);
-			~{}();
-
-		{}
-	}};
-	]], {
-		i(1, "ClassName"),
-		i(2),
-		f(function(args) return args[1][1] end, {1}),
-		f(function(args) return args[1][1] end, {1}),
-		f(function(args) return args[1][1] end, {1}),
-		f(function(args) return args[1][1] end, {1}),
-		f(function(args) return args[1][1] end, {1}),
-		f(function(args) return args[1][1] end, {1}),
-		i(0)
-	}
+   s({
+      trig = "cl",
+      wordTrig = true,
+      snippetType = "autosnippet"
+   }, 
+   fmt([[
+   class {} {{
+      private:
+         {}
+      public:
+         {}();
+         {}(const {}& other);
+         {}& operator=(const {}& rhs);
+         ~{}();
+      {}
+   }};
+   ]], {
+      i(1, "ClassName"),
+      i(2),
+      f(function(args) return args[1][1] end, {1}),
+      f(function(args) return args[1][1] end, {1}),
+      f(function(args) return args[1][1] end, {1}),
+      f(function(args) return args[1][1] end, {1}),
+      f(function(args) return args[1][1] end, {1}),
+      f(function(args) return args[1][1] end, {1}),
+      i(0)
+   }
 ))
 }

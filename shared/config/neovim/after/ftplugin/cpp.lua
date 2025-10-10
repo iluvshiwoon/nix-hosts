@@ -1,6 +1,9 @@
 local set = vim.opt_local
 
 -- Indentation settings for C++
+set.shiftwidth = 3
+set.tabstop = 3
+set.expandtab = true
 set.smartindent = true
 
 -- Line numbers
