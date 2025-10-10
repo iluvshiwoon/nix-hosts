@@ -1,7 +1,7 @@
 return
 {
   'saghen/blink.cmp',
-  version = "1.*",
+  version = '1.*',
   -- optional: provides snippets for the snippet source
   dependencies = {'L3MON4D3/LuaSnip', version = 'v2.*'},
   ---@module 'blink.cmp'
