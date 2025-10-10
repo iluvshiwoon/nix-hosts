@@ -143,11 +143,11 @@ in
       ];
       xdg.configFile =
         {
-          "nvim/init.lua".source = ../../shared/config/neovim/init.lua;
-          "nvim/lua".source = ../../shared/config/neovim/lua;
-          "nvim/lsp".source = ../../shared/config/neovim/lsp;
-          "nvim/after".source = ../../shared/config/neovim/after;
-	  "nvim/luaSnip".source = ../../shared/config/neovim/luaSnip;
+					"nvim/init.lua".source = ../../shared/config/neovim/init.lua;
+					"nvim/lua".source = ../../shared/config/neovim/lua;
+					"nvim/lsp".source = ../../shared/config/neovim/lsp;
+					"nvim/after".source = ../../shared/config/neovim/after;
+					"nvim/luaSnip".source = ../../shared/config/neovim/luaSnip;
         }
         // optionalAttrs cfg.bindLazyLock {
           "nvim/lazy-lock.json".source = ../../shared/config/neovim/lazy-lock.json;

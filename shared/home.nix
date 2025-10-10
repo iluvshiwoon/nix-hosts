@@ -19,6 +19,7 @@
     nix-prefetch-git
     fzf
     cmake
+    gnumake
     clang
   ] ++ lib.optionals (!pkgs.stdenv.isDarwin) [];
 
