@@ -50,6 +50,11 @@
       flake = false;
     };
 
+    homebrew-mongodb = {
+    	url = "github:mongodb/homebrew-brew";
+	flake = false;
+    };
+
     disko = {
       url = "github:nix-community/disko";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -145,6 +150,7 @@
                   "homebrew/homebrew-core" = inputs.homebrew-core;
                   "homebrew/homebrew-cask" = inputs.homebrew-cask;
 		  "iluvshiwoon/homebrew-additional" = inputs.homebrew-additional;
+		  "mongodb/homebrew-brew" = inputs.homebrew-mongodb;
                 };
                 mutableTaps = false;
                 autoMigrate = true;
