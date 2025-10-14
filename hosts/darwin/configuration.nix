@@ -104,8 +104,7 @@
 
     # `brew install --cask`
     casks = [
-	"actual"
-	"homebank"
+	    "actual"
       "ghostty"
       "cursor"
       "utm"
