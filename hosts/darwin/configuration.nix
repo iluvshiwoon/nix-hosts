@@ -100,6 +100,7 @@
       # "curl" # no not install curl via nixpkgs, it's not working well on macOS!
       "mas"
       "fzf"
+      "gemini-cli"
     ];
 
     # `brew install --cask`
