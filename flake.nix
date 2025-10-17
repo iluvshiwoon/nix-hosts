@@ -17,7 +17,10 @@
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     neovim-nightly-overlay.url = "github:nix-community/neovim-nightly-overlay";
     zen-browser.url = "github:youwen5/zen-browser-flake";
-
+tmux-toggle-popup = {
+      url = "github:loichyan/tmux-toggle-popup";
+      flake = false;
+    };
     lix-module = {
       url = "https://git.lix.systems/lix-project/nixos-module/archive/2.93.0.tar.gz";
       inputs.nixpkgs.follows = "nixpkgs";
