@@ -1,7 +1,7 @@
 {pkgs,inputs,...} : {
 programs.tmux = {
   enable = true;
-  terminal = "screen-255color";
+  terminal = "screen-256color";
   baseIndex = 1;
   historyLimit = 10000;
   escapeTime = 10;
@@ -23,6 +23,7 @@ programs.tmux = {
 
   extraConfig = ''
     set -g renumber-windows on
+    set -g set-clipboard on
     # --- Keybindings ---
     unbind C-b
     set-option -g prefix C-Space
