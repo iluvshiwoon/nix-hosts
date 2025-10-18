@@ -46,7 +46,9 @@ in
       bind - split-window -v -c "#{pane_current_path}"
       unbind '"'
       unbind %
-
+bind-key -T copy-mode-vi v send-keys -X begin-selection
+  bind-key -T copy-mode-vi y send-keys -X copy-selection-and-cancel
+  bind-key -T copy-mode-vi C-v send-keys -X rectangle-toggle
       # Reload config file
       bind r source-file ~/.config/tmux/tmux.conf \; display "Reloaded!"
 
