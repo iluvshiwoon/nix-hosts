@@ -1,7 +1,19 @@
-{ pkgs, inputs, ... }: {
+{ pkgs, inputs, ... }:
+
+let
+  # Define the custom tmux plugin package using the expression you provided.
+  # This builds the plugin from the source specified in your flake inputs.
+  tmux-toggle-popup-plugin = pkgs.tmuxPlugins.mkTmuxPlugin {
+    pluginName = "tmux-toggle-popup";
+    version = "0.4.4";
+    rtpFilePath = "toggle-popup.tmux";
+    # This correctly points to the source from your flake.nix inputs
+    src = inputs.tmux-toggle-popup;
+  };
+in
+{
   programs.tmux = {
     enable = true;
-    # Set zsh as the default shell for tmux
     shell = "${pkgs.zsh}/bin/zsh";
     terminal = "screen-256color";
     baseIndex = 1;
@@ -9,35 +21,29 @@
     escapeTime = 10;
     focusEvents = true;
 
-    plugins = with pkgs.tmuxPlugins; [
-      # Persists tmux environment across system restarts
-      resurrect
-      # Continuous saving of tmux environment
-      continuum
-      # A popup window for tmux
-      {
-        plugin = pkgs.tmuxPlugins.mkTmuxPlugin {
-          pluginName = "tmux-toggle-popup";
-          version = "main";
-          src = inputs.tmux-toggle-popup;
-        };
-        extraConfig = ''
-          set -g @popup-toggle '${inputs.tmux-toggle-popup}/bin/tmux-toggle-popup'
-          set -g @popup-toggle-mode 'force-close'
-        '';
-      }
+    plugins = with pkgs; [
+      # Add our custom-built plugin to the list of plugins
+      tmux-toggle-popup-plugin
+
+      # Other plugins
+      tmuxPlugins.resurrect
+      tmuxPlugins.continuum
     ];
 
+    # A single, consolidated extraConfig block
     extraConfig = ''
       # --- Keybindings ---
-      # Set the prefix to C-Space
+      # Set the prefix to C-a
       unbind C-b
       set-option -g prefix C-a
       bind-key C-a send-prefix
 
-      # Split panes using | and -
-      bind | split-window -h
-      bind - split-window -v
+      # Popup binding
+      bind C-t run "#{@popup-toggle} -Ed'#{pane_current_path}' -w75% -h75%"
+
+      # Split panes using | and - (and open in the current directory)
+      bind | split-window -h -c "#{pane_current_path}"
+      bind - split-window -v -c "#{pane_current_path}"
       unbind '"'
       unbind %
 
@@ -51,7 +57,6 @@
       set -g set-clipboard on
 
       # --- Kanso Theme ---
-      # Transparent status bar with black text to match your ghostty theme
       set -g status-style "bg=default,fg=#22262D"
       set -g status-left ""
       set -g status-right "#(whoami)@#h | %Y-%m-%d %H:%M"
@@ -63,3 +68,4 @@
     '';
   };
 }
+
