@@ -17,7 +17,7 @@
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     neovim-nightly-overlay.url = "github:nix-community/neovim-nightly-overlay";
     zen-browser.url = "github:youwen5/zen-browser-flake";
-tmux-toggle-popup = {
+    tmux-toggle-popup = {
       url = "github:loichyan/tmux-toggle-popup";
       flake = false;
     };
@@ -44,8 +44,8 @@ tmux-toggle-popup = {
       flake = false;
     };
     homebrew-additional = {
-    	url = "github:iluvshiwoon/homebrew-additional";
-	flake = false;
+      url = "github:iluvshiwoon/homebrew-additional";
+      flake = false;
     };
 
     homebrew-cask = {
@@ -54,8 +54,8 @@ tmux-toggle-popup = {
     };
 
     homebrew-mongodb = {
-    	url = "github:mongodb/homebrew-brew";
-	flake = false;
+      url = "github:mongodb/homebrew-brew";
+      flake = false;
     };
 
     disko = {
@@ -74,7 +74,7 @@ tmux-toggle-popup = {
     ...
   } @ inputs: let
     inherit (self) outputs;
-    
+
     # Define your machines and their configurations
     machines = {
       macbook = {
@@ -85,7 +85,7 @@ tmux-toggle-popup = {
         hostPath = "hosts/darwin";
       };
       school = {
-        system = "x86_64-linux"; 
+        system = "x86_64-linux";
         username = "kgriset";
         # No hostname specified - will be determined at runtime
         hostname = null;
@@ -104,7 +104,7 @@ tmux-toggle-popup = {
     linuxSystems = ["x86_64-linux" "aarch64-linux"];
     darwinSystems = ["aarch64-darwin" "x86_64-darwin"];
     forAllSystems = f: nixpkgs.lib.genAttrs (linuxSystems ++ darwinSystems) f;
-    
+
     # Helper function to create machine-specific modules
     createMachineModules = machine: [
       # Always include shared configuration
@@ -112,21 +112,20 @@ tmux-toggle-popup = {
       # Include host-specific config if it exists
       ./${machine.hostPath}/configuration.nix
     ];
-    
   in {
     # Your custom packages
     packages = forAllSystems (system: import ./pkgs nixpkgs.legacyPackages.${system});
-    
+
     # Formatter for your nix files
     formatter = forAllSystems (system: nixpkgs.legacyPackages.${system}.alejandra);
 
     # Your custom packages and modifications, exported as overlays
     overlays = import ./overlays {inherit inputs;};
-    
+
     # Reusable home-manager modules
     homeManagerModules = import ./modules/home-manager;
-    
-    # Reusable darwin modules  
+
+    # Reusable darwin modules
     darwinModules = import ./modules/darwin;
 
     # Darwin configurations (macOS with nix-darwin)
@@ -143,23 +142,25 @@ tmux-toggle-popup = {
             hostname = machine.hostname;
             machineConfig = machine;
           };
-          modules = [
-            inputs.nix-homebrew.darwinModules.nix-homebrew
-            {
-              nix-homebrew = {
-                user = machine.username;
-                enable = true;
-                taps = {
-                  "homebrew/homebrew-core" = inputs.homebrew-core;
-                  "homebrew/homebrew-cask" = inputs.homebrew-cask;
-		  "iluvshiwoon/homebrew-additional" = inputs.homebrew-additional;
-		  "mongodb/homebrew-brew" = inputs.homebrew-mongodb;
+          modules =
+            [
+              inputs.nix-homebrew.darwinModules.nix-homebrew
+              {
+                nix-homebrew = {
+                  user = machine.username;
+                  enable = true;
+                  taps = {
+                    "homebrew/homebrew-core" = inputs.homebrew-core;
+                    "homebrew/homebrew-cask" = inputs.homebrew-cask;
+                    "iluvshiwoon/homebrew-additional" = inputs.homebrew-additional;
+                    "mongodb/homebrew-brew" = inputs.homebrew-mongodb;
+                  };
+                  mutableTaps = false;
+                  autoMigrate = true;
                 };
-                mutableTaps = false;
-                autoMigrate = true;
-              };
-            }
-          ] ++ createMachineModules machine;
+              }
+            ]
+            ++ createMachineModules machine;
         };
       }) (builtins.filter (name: machines.${name}.type == "darwin") (builtins.attrNames machines))
     );
@@ -178,56 +179,61 @@ tmux-toggle-popup = {
             hostname = machine.hostname;
             machineConfig = machine;
           };
-          modules = [
-            disko.nixosModules.disko
-            lix-module.nixosModules.default
-          ] ++ createMachineModules machine;
+          modules =
+            [
+              disko.nixosModules.disko
+              lix-module.nixosModules.default
+            ]
+            ++ createMachineModules machine;
         };
       }) (builtins.filter (name: machines.${name}.type == "nixos") (builtins.attrNames machines))
     );
 
     # Standalone home-manager configurations
     homeConfigurations = builtins.listToAttrs (
-      builtins.concatMap (machineName: let
-        machine = machines.${machineName};
-      in 
-        if machine.hostname != null then [
-          # Configuration with hostname (for known hostnames)
-          {
-            name = "${machine.username}@${machine.hostname}";
-            value = home-manager.lib.homeManagerConfiguration {
-              pkgs = nixpkgs.legacyPackages.${machine.system};
-              extraSpecialArgs = {
-                inherit inputs outputs;
-                username = machine.username;
-                hostname = machine.hostname;
-                machineConfig = machine;
+      builtins.concatMap (
+        machineName: let
+          machine = machines.${machineName};
+        in
+          if machine.hostname != null
+          then [
+            # Configuration with hostname (for known hostnames)
+            {
+              name = "${machine.username}@${machine.hostname}";
+              value = home-manager.lib.homeManagerConfiguration {
+                pkgs = nixpkgs.legacyPackages.${machine.system};
+                extraSpecialArgs = {
+                  inherit inputs outputs;
+                  username = machine.username;
+                  hostname = machine.hostname;
+                  machineConfig = machine;
+                };
+                modules = [
+                  ./shared/home.nix
+                  ./${machine.hostPath}/home.nix
+                ];
               };
-              modules = [
-                ./shared/home.nix
-                ./${machine.hostPath}/home.nix
-              ];
-            };
-          }
-        ] else [
-          # Configuration without hostname (for dynamic hostnames like school)
-          {
-            name = machine.username;
-            value = home-manager.lib.homeManagerConfiguration {
-              pkgs = nixpkgs.legacyPackages.${machine.system};
-              extraSpecialArgs = {
-                inherit inputs outputs;
-                username = machine.username;
-                hostname = null; # Will be detected at runtime
-                machineConfig = machine;
+            }
+          ]
+          else [
+            # Configuration without hostname (for dynamic hostnames like school)
+            {
+              name = machine.username;
+              value = home-manager.lib.homeManagerConfiguration {
+                pkgs = nixpkgs.legacyPackages.${machine.system};
+                extraSpecialArgs = {
+                  inherit inputs outputs;
+                  username = machine.username;
+                  hostname = null; # Will be detected at runtime
+                  machineConfig = machine;
+                };
+                modules = [
+                  ./shared/home.nix
+                  ./${machine.hostPath}/home.nix
+                ];
               };
-              modules = [
-                ./shared/home.nix
-                ./${machine.hostPath}/home.nix
-              ];
-            };
-          }
-        ]
+            }
+          ]
       ) (builtins.attrNames machines)
     );
   };

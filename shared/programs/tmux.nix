@@ -67,6 +67,7 @@ bind-key -T copy-mode-vi v send-keys -X begin-selection
       set -g window-status-format " #I:#W "
       set -g pane-border-style "fg=#393B44"
       set -g pane-active-border-style "fg=#8ba4b0"
+	set -g @popup-toggle-mode 'force-close'
     '';
   };
 }

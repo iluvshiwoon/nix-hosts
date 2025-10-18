@@ -3,10 +3,9 @@
   config,
   lib,
   pkgs,
-	inputs,
+  inputs,
   ...
-}:
-let
+}: let
   cfg = config.programs.neovim.nvimdots;
   inherit (lib) flip warn const;
   inherit (lib.attrsets) optionalAttrs;
@@ -14,14 +13,14 @@ let
   inherit (lib.modules) mkIf;
   inherit (lib.options) mkEnableOption mkOption literalExpression;
   inherit (lib.strings) concatStringsSep versionOlder versionAtLeast;
-  inherit (lib.types)
+  inherit
+    (lib.types)
     listOf
     coercedTo
     package
     functionTo
     ;
-in
-{
+in {
   options = {
     programs.neovim = {
       nvimdots = {
@@ -35,12 +34,12 @@ in
           You cannot update it even if you run the Lazy command, because it binds read-only.
           You need to remove lazy-lock.json before enabling this option if `mergeLazyLock` is set.
         '';
-        mergeLazyLock = mkEnableOption '' Merges the managed lazy-lock.json with the existing one under $XDG_CONFIG_HOME/nvim if its hash has changed on activation.
-          Upstream package version changes have high priority.
-          This means changes to lazy-lock.json in the config directory (likely due to installing package) will be preserved.
-          In other words, it achieves environment consistency while remaining adaptable to changes.
-          You need to unlink lazy-lock.json before enabling this option if `bindLazyLock` is set.
-          Please refer to the wiki for details on the behavior.
+        mergeLazyLock = mkEnableOption ''          Merges the managed lazy-lock.json with the existing one under $XDG_CONFIG_HOME/nvim if its hash has changed on activation.
+                   Upstream package version changes have high priority.
+                   This means changes to lazy-lock.json in the config directory (likely due to installing package) will be preserved.
+                   In other words, it achieves environment consistency while remaining adaptable to changes.
+                   You need to unlink lazy-lock.json before enabling this option if `bindLazyLock` is set.
+                   Please refer to the wiki for details on the behavior.
         '';
         setBuildEnv = mkEnableOption ''
           Sets environment variables that resolve build dependencies as required by `mason.nvim` and `nvim-treesitter`
@@ -56,10 +55,9 @@ in
           use Haskell plugins.
         '';
         extraHaskellPackages = mkOption {
-          type =
-            let
-              fromType = listOf package;
-            in
+          type = let
+            fromType = listOf package;
+          in
             coercedTo fromType (flip warn const ''
               Assigning a plain list to extraHaskellPackages is deprecated.
                      Please assign a function taking a package set as argument, so
@@ -67,7 +65,7 @@ in
                      should become
                        extraHaskellPackages = ps: [ ps.xxx ];
             '') (functionTo fromType);
-          default = _: [ ];
+          default = _: [];
           defaultText = literalExpression "ps: [ ]";
           example = literalExpression "hsPkgs: with hsPkgs; [ mtl ]";
           description = ''
@@ -79,61 +77,60 @@ in
         };
         extraDependentPackages = mkOption {
           type = listOf package;
-          default = [ ];
+          default = [];
           example = literalExpression "[ pkgs.openssl ]";
           description = "Extra build depends to add `LIBRARY_PATH` and `CPATH`.";
         };
       };
     };
   };
-  config =
-    let
-      # Inspired from https://github.com/NixOS/nixpkgs/blob/nixos-unstable/nixos/modules/programs/nix-ld.nix
-      build-dependent-pkgs =
-        builtins.filter (package: !package.meta.unsupported) [
-          # manylinux
-          pkgs.acl
-          pkgs.attr
-          pkgs.bzip2
-          pkgs.curl
-          pkgs.glibc
-          pkgs.libsodium
-          pkgs.libssh
-          pkgs.libxml2
-          pkgs.openssl
-          pkgs.stdenv.cc.cc
-          pkgs.stdenv.cc.cc.lib
-          pkgs.systemd
-          pkgs.util-linux
-          pkgs.xz
-          pkgs.zlib
-          pkgs.zstd
-          # Packages not included in `nix-ld`'s NixOSModule
-          pkgs.glib
-          pkgs.libcxx
-        ]
-        ++ cfg.extraDependentPackages;
+  config = let
+    # Inspired from https://github.com/NixOS/nixpkgs/blob/nixos-unstable/nixos/modules/programs/nix-ld.nix
+    build-dependent-pkgs =
+      builtins.filter (package: !package.meta.unsupported) [
+        # manylinux
+        pkgs.acl
+        pkgs.attr
+        pkgs.bzip2
+        pkgs.curl
+        pkgs.glibc
+        pkgs.libsodium
+        pkgs.libssh
+        pkgs.libxml2
+        pkgs.openssl
+        pkgs.stdenv.cc.cc
+        pkgs.stdenv.cc.cc.lib
+        pkgs.systemd
+        pkgs.util-linux
+        pkgs.xz
+        pkgs.zlib
+        pkgs.zstd
+        # Packages not included in `nix-ld`'s NixOSModule
+        pkgs.glib
+        pkgs.libcxx
+      ]
+      ++ cfg.extraDependentPackages;
 
-      neovim-build-deps = pkgs.buildEnv {
-        name = "neovim-build-deps";
-        paths = build-dependent-pkgs;
-        extraOutputsToInstall = [ "dev" ];
-        pathsToLink = [
-          "/lib"
-          "/include"
-        ];
-        ignoreCollisions = true;
-      };
-
-      buildEnv = [
-        ''CPATH=''${CPATH:+''${CPATH}:}${neovim-build-deps}/include''
-        ''CPLUS_INCLUDE_PATH=''${CPLUS_INCLUDE_PATH:+''${CPLUS_INCLUDE_PATH}:}:${neovim-build-deps}/include/c++/v1''
-        ''LD_LIBRARY_PATH=''${LD_LIBRARY_PATH:+''${LD_LIBRARY_PATH}:}${neovim-build-deps}/lib''
-        ''LIBRARY_PATH=''${LIBRARY_PATH:+''${LIBRARY_PATH}:}${neovim-build-deps}/lib''
-        ''NIX_LD_LIBRARY_PATH=''${NIX_LD_LIBRARY_PATH:+''${NIX_LD_LIBRARY_PATH}:}${neovim-build-deps}/lib''
-        ''PKG_CONFIG_PATH=''${PKG_CONFIG_PATH:+''${PKG_CONFIG_PATH}:}${neovim-build-deps}/include/pkgconfig''
+    neovim-build-deps = pkgs.buildEnv {
+      name = "neovim-build-deps";
+      paths = build-dependent-pkgs;
+      extraOutputsToInstall = ["dev"];
+      pathsToLink = [
+        "/lib"
+        "/include"
       ];
-    in
+      ignoreCollisions = true;
+    };
+
+    buildEnv = [
+      ''CPATH=''${CPATH:+''${CPATH}:}${neovim-build-deps}/include''
+      ''CPLUS_INCLUDE_PATH=''${CPLUS_INCLUDE_PATH:+''${CPLUS_INCLUDE_PATH}:}:${neovim-build-deps}/include/c++/v1''
+      ''LD_LIBRARY_PATH=''${LD_LIBRARY_PATH:+''${LD_LIBRARY_PATH}:}${neovim-build-deps}/lib''
+      ''LIBRARY_PATH=''${LIBRARY_PATH:+''${LIBRARY_PATH}:}${neovim-build-deps}/lib''
+      ''NIX_LD_LIBRARY_PATH=''${NIX_LD_LIBRARY_PATH:+''${NIX_LD_LIBRARY_PATH}:}${neovim-build-deps}/lib''
+      ''PKG_CONFIG_PATH=''${PKG_CONFIG_PATH:+''${PKG_CONFIG_PATH}:}${neovim-build-deps}/include/pkgconfig''
+    ];
+  in
     mkIf cfg.enable {
       assertions = [
         {
@@ -143,11 +140,11 @@ in
       ];
       xdg.configFile =
         {
-					"nvim/init.lua".source = ../../shared/config/neovim/init.lua;
-					"nvim/lua".source = ../../shared/config/neovim/lua;
-					"nvim/lsp".source = ../../shared/config/neovim/lsp;
-					"nvim/after".source = ../../shared/config/neovim/after;
-					"nvim/luaSnip".source = ../../shared/config/neovim/luaSnip;
+          "nvim/init.lua".source = ../../shared/config/neovim/init.lua;
+          "nvim/lua".source = ../../shared/config/neovim/lua;
+          "nvim/lsp".source = ../../shared/config/neovim/lsp;
+          "nvim/after".source = ../../shared/config/neovim/after;
+          "nvim/luaSnip".source = ../../shared/config/neovim/luaSnip;
         }
         // optionalAttrs cfg.bindLazyLock {
           "nvim/lazy-lock.json".source = ../../shared/config/neovim/lazy-lock.json;
@@ -159,22 +156,30 @@ in
               if [ -f ${config.xdg.configHome}/nvim/lazy-lock.json ]; then
                 tmp=$(mktemp)
                 ${pkgs.jq}/bin/jq -r -s '.[0] * .[1]' ${config.xdg.configHome}/nvim/lazy-lock.json ${
-                  config.xdg.configFile."nvim/lazy-lock.nix.json".source
-                } > "''${tmp}" && mv "''${tmp}" ${config.xdg.configHome}/nvim/lazy-lock.json
+                config.xdg.configFile."nvim/lazy-lock.nix.json".source
+              } > "''${tmp}" && mv "''${tmp}" ${config.xdg.configHome}/nvim/lazy-lock.json
               else
                 ${pkgs.rsync}/bin/rsync --chmod 644 ${
-                  config.xdg.configFile."nvim/lazy-lock.nix.json".source
-                } ${config.xdg.configHome}/nvim/lazy-lock.json
+                config.xdg.configFile."nvim/lazy-lock.nix.json".source
+              } ${config.xdg.configHome}/nvim/lazy-lock.json
               fi
             '';
           };
         };
       home = {
-        packages = [
-	pkgs.lua54Packages.jsregexp
-        pkgs.ripgrep
-	pkgs.nixd
-	pkgs.lua-language-server
+        packages = with pkgs; [
+          lua54Packages.jsregexp
+          ripgrep
+          alejandra
+          stylua
+          prettierd
+          pgformatter
+
+          nixd
+          lua-language-server
+          nodePackages.svelte-language-server
+          nodePackages.typescript-language-server
+          tailwindcss-language-server
         ];
         shellAliases = optionalAttrs (cfg.setBuildEnv && (versionOlder config.home.stateVersion "24.05")) {
           nvim = concatStringsSep " " buildEnv + " nvim";
@@ -183,8 +188,8 @@ in
       programs.neovim =
         {
           enable = true;
-					package = inputs.neovim-nightly-overlay.packages.${pkgs.system}.default;
-	vimAlias = true;
+          package = inputs.neovim-nightly-overlay.packages.${pkgs.system}.default;
+          vimAlias = true;
 
           withNodeJs = true;
           withPython3 = true;
@@ -217,8 +222,8 @@ in
               (pkgs.haskellPackages.ghcWithPackages (ps: cfg.extraHaskellPackages ps))
             ];
 
-          extraPython3Packages =
-            ps: with ps; [
+          extraPython3Packages = ps:
+            with ps; [
               docformatter
               isort
               pynvim
