@@ -1,12 +1,12 @@
 {
-	outputs,
+  outputs,
   username,
   lib,
   pkgs,
   ...
 }: {
   imports = [
-  outputs.homeManagerModules.neovim
+    outputs.homeManagerModules.neovim
     ./programs
   ];
 
@@ -15,13 +15,15 @@
     mergeLazyLock = true;
   };
 
-  home.packages = with pkgs; [
-    nix-prefetch-git
-    fzf
-    cmake
-    gnumake
-    clang
-  ] ++ lib.optionals (!pkgs.stdenv.isDarwin) [];
+  home.packages = with pkgs;
+    [
+      nix-prefetch-git
+      fzf
+      cmake
+      gnumake
+      clang
+    ]
+    ++ lib.optionals (!pkgs.stdenv.isDarwin) [];
 
   home.stateVersion = "25.05";
   home.username = username;
@@ -47,26 +49,32 @@
       plugins = ["git" "fzf"];
     };
 
-    initContent = let zshInitExtra = lib.mkBefore ''
-	export PATH=~/.config/emacs/bin:$PATH
-      DISABLE_MAGIC_FUNCTIONS=true
-      export "MICRO_TRUECOLOR=1"
-      eval "$(zoxide init --cmd cd zsh)"
-    ''; zshInit = ''
-      flakify () {
-      	if [ -z "$1" ]; then
-      		echo "Error: Template name required"
-      			echo "Usage: nix-init-template <template-name>"
-      			return 1
-      			fi
+    initContent = let
+      zshInitExtra = lib.mkBefore ''
+        export PATH=~/.config/emacs/bin:$PATH
+             DISABLE_MAGIC_FUNCTIONS=true
+             export "MICRO_TRUECOLOR=1"
+             eval "$(zoxide init --cmd cd zsh)"
+      '';
+      zshInit = ''
+        flakify () {
+        	if [ -z "$1" ]; then
+        		echo "Error: Template name required"
+        			echo "Usage: nix-init-template <template-name>"
+        			return 1
+        			fi
 
-      			nix flake init --refresh -t "github:iluvshiwoon/dev-env#$1"
-      			direnv allow
-      			echo -e ".direnv\n.envrc" >> ./.gitignore
-      }
-    ''; in lib.mkMerge [ zshInitExtra zshInit ];
-
-    shellAliases = {
+        			nix flake init --refresh -t "github:iluvshiwoon/dev-env#$1"
+        			direnv allow
+        			echo -e ".direnv\n.envrc" >> ./.gitignore
+        }
+                source ${pkgs.zsh-vi-mode}/share/zsh-vi-mode/zsh-vi-mode.plugin.zsh
+      '';
+    in
+      lib.mkMerge [zshInitExtra zshInit];
+    sessionVariables = {
+      EDITOR = "nvim";
+      VISUAL = "nvim";
     };
   };
   programs.zoxide = {
