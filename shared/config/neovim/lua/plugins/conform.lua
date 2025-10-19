@@ -6,9 +6,9 @@ return {
 	opts = {
 		notify_on_error = true,
 		formatters_by_ft = {
-			svelte = { "prettierd" },
-			javascript = { "prettierd" },
-			typescript = { "prettierd" },
+			svelte = { "prettier" },
+			javascript = { "prettier" },
+			typescript = { "prettier" },
 			sql = { "pg_format" }, -- Note: nix package is pgformatter, but command is pg_format
 			lua = { "stylua" },
 			nix = { "alejandra" },

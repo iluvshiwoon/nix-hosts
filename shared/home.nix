@@ -22,6 +22,9 @@
       cmake
       gnumake
       clang
+
+      nodejs_latest
+      bun
     ]
     ++ lib.optionals (!pkgs.stdenv.isDarwin) [];
 
@@ -33,6 +36,7 @@
     else "/home/${username}";
 
   home.file = {
+    ".gemini/settings.json" = {source = ./config/gemini/settings.json;};
   };
 
   home.sessionVariables = {

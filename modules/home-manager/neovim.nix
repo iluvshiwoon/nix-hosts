@@ -6,6 +6,19 @@
   inputs,
   ...
 }: let
+  prettier-base = pkgs.nodePackages.prettier.overrideAttrs (oldAttrs: {
+    nativeBuildInputs = (oldAttrs.nativeBuildInputs or []) ++ [pkgs.makeWrapper];
+  });
+  prettierWithPlugins = import inputs.prettier-with-plugins {
+    inherit lib pkgs;
+    prettier = prettier-base;
+  };
+  prettierCustomized = prettierWithPlugins.prettier {
+    enabled = with prettierWithPlugins.plugins; [
+      prettier-plugin-svelte
+      # Add any other plugins you need here
+    ];
+  };
   cfg = config.programs.neovim.nvimdots;
   inherit (lib) flip warn const;
   inherit (lib.attrsets) optionalAttrs;
@@ -172,10 +185,10 @@ in {
           ripgrep
           alejandra
           stylua
-          prettierd
           pgformatter
 
           nixd
+          prettierCustomized
           lua-language-server
           nodePackages.svelte-language-server
           nodePackages.typescript-language-server
