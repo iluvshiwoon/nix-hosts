@@ -105,7 +105,8 @@
 
     # `brew install --cask`
     casks = [
-	    "actual"
+      "actual"
+      "docker-desktop"
       "ghostty"
       "cursor"
       "utm"

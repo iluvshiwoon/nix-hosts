@@ -193,6 +193,7 @@ in {
           nodePackages.svelte-language-server
           nodePackages.typescript-language-server
           tailwindcss-language-server
+          deno
         ];
         shellAliases = optionalAttrs (cfg.setBuildEnv && (versionOlder config.home.stateVersion "24.05")) {
           nvim = concatStringsSep " " buildEnv + " nvim";
