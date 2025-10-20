@@ -11,7 +11,7 @@ return {
 			typescript = { "prettier" },
 			sql = { "pg_format" }, -- Note: nix package is pgformatter, but command is pg_format
 			lua = { "stylua" },
-			nix = { "alejandra" },
+			nix = { "alejandra -- " },
 		},
 		format_on_save = {
 			timeout_ms = 500,

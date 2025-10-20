@@ -21,6 +21,10 @@
       url = "github:loichyan/tmux-toggle-popup";
       flake = false;
     };
+    upstash-context7 = {
+      url = "github:upstash/context7";
+      flake = false;
+    };
     lix-module = {
       url = "https://git.lix.systems/lix-project/nixos-module/archive/2.93.0.tar.gz";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -30,7 +34,7 @@
       flake = false;
     };
     home-manager = {
-      url = "github:nix-community/home-manager";
+      url = "github:nix-community/home-manager/master";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 

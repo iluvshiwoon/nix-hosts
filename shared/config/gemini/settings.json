@@ -10,12 +10,6 @@
 	    "enabled" : true
     }
   },
-  "mcpServers": {
-    "context7": {
-      "command": "npx",
-      "args": ["-y", "@upstash/context7-mcp", "--api-key", "ctx7sk-85d79060-9a17-44dd-835f-89d05d448156"]
-    }
-  },
   "ui": {
     "theme": "ANSI Light"
   }
