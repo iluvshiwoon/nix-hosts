@@ -25,6 +25,18 @@
       url = "github:upstash/context7";
       flake = false;
     };
+    svelteMcp = {
+    	url = "github:sveltejs/mcp";
+	flake = false;
+    };
+    chromeMcp = {
+    	url = "github:ChromeDevTools/chrome-devtools-mcp";
+	flake = false;
+    };
+    nanobanana = {
+    	url = "github:gemini-cli-extensions/nanobanana";
+	flake = false;
+    };
     lix-module = {
       url = "https://git.lix.systems/lix-project/nixos-module/archive/2.93.0.tar.gz";
       inputs.nixpkgs.follows = "nixpkgs";

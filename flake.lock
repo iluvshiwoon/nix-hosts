@@ -17,6 +17,22 @@
         "type": "github"
       }
     },
+    "chromeMcp": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1761053809,
+        "narHash": "sha256-+PCwu3nKy0PeuJ3G5jngtWOthmUqhuKtWw4sUwLMxFk=",
+        "owner": "ChromeDevTools",
+        "repo": "chrome-devtools-mcp",
+        "rev": "bc81582632be5cd87d8681748532c1d52e91004f",
+        "type": "github"
+      },
+      "original": {
+        "owner": "ChromeDevTools",
+        "repo": "chrome-devtools-mcp",
+        "type": "github"
+      }
+    },
     "darwin": {
       "inputs": {
         "nixpkgs": [
@@ -334,6 +350,22 @@
         "url": "https://git.lix.systems/lix-project/nixos-module/archive/2.93.0.tar.gz"
       }
     },
+    "nanobanana": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1759507797,
+        "narHash": "sha256-l5qQHjqE+jPT9+hJnZ/j8ym0w6Ge/45SJJgiiUdFKJM=",
+        "owner": "gemini-cli-extensions",
+        "repo": "nanobanana",
+        "rev": "3d1edae59d25c8350f9e3638dcd2cc6b174fdf76",
+        "type": "github"
+      },
+      "original": {
+        "owner": "gemini-cli-extensions",
+        "repo": "nanobanana",
+        "type": "github"
+      }
+    },
     "neovim-nightly-overlay": {
       "inputs": {
         "flake-compat": "flake-compat",
@@ -458,6 +490,7 @@
     },
     "root": {
       "inputs": {
+        "chromeMcp": "chromeMcp",
         "darwin": "darwin",
         "disko": "disko",
         "home-manager": "home-manager",
@@ -466,13 +499,31 @@
         "homebrew-core": "homebrew-core",
         "homebrew-mongodb": "homebrew-mongodb",
         "lix-module": "lix-module",
+        "nanobanana": "nanobanana",
         "neovim-nightly-overlay": "neovim-nightly-overlay",
         "nix-homebrew": "nix-homebrew",
         "nixpkgs": "nixpkgs_2",
         "prettier-with-plugins": "prettier-with-plugins",
+        "svelteMcp": "svelteMcp",
         "tmux-toggle-popup": "tmux-toggle-popup",
         "upstash-context7": "upstash-context7",
         "zen-browser": "zen-browser"
+      }
+    },
+    "svelteMcp": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1760865072,
+        "narHash": "sha256-DI3lvfvZ154ULABVO5+J6m5evAhI/ziZYKi2VN46CfM=",
+        "owner": "sveltejs",
+        "repo": "mcp",
+        "rev": "60aa30397f778a1d9515c706f6bdaf33887a406b",
+        "type": "github"
+      },
+      "original": {
+        "owner": "sveltejs",
+        "repo": "mcp",
+        "type": "github"
       }
     },
     "systems": {

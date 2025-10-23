@@ -114,6 +114,7 @@
       "zen"
       "steam"
       "tor-browser"
+      "google-chrome"
       "iluvshiwoon/homebrew-additional/ryujinx"
     ];
   };
