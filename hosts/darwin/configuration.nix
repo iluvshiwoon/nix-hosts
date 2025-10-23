@@ -105,6 +105,7 @@
 
     # `brew install --cask`
     casks = [
+    "helium-browser"
       "actual"
       "docker-desktop"
       "ghostty"
