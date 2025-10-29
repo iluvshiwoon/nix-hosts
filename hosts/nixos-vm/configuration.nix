@@ -79,9 +79,16 @@ programs.ssh.startAgent = true;
   # Turn on flag for proprietary software
   nix = {
     # nixPath = ["nixos-config=/home/${user}/.local/share/src/nixos-config:/etc/nixos"];
+    optimise.automatic = true;
+    gc = {
+    	automatic = true;
+	dates = "weekly";
+	options = "--delete-older-than 30d";
+    };
     settings = {
       allowed-users = ["${user}"];
       trusted-users = ["@admin" "${user}"];
+      download-buffer-size = 524288000;
     };
 
     package = pkgs.nix;
