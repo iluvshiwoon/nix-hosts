@@ -19,6 +19,7 @@
 
   home.packages = with pkgs;
     [
+    man-pages
       nix-prefetch-git
       fzf
       cmake
