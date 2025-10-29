@@ -85,11 +85,6 @@
     enable = true;
     enableZshIntegration = true;
   };
-  programs.git = {
-    enable = true;
-    userName = "iluvshiwoon";
-    userEmail = "sntcillian@gmail.com";
-  };
   programs = {
     direnv = {
       enable = true;
