@@ -188,8 +188,9 @@ in {
           pgformatter
 
           nixd
-          prettierCustomized
+	  clang-tools
           lua-language-server
+          prettierCustomized
           nodePackages.svelte-language-server
           nodePackages.typescript-language-server
           tailwindcss-language-server
