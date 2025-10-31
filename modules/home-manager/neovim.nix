@@ -187,8 +187,10 @@ in {
           stylua
           pgformatter
 
+          ruff
+          basedpyright
           nixd
-	  clang-tools
+          clang-tools
           lua-language-server
           prettierCustomized
           nodePackages.svelte-language-server

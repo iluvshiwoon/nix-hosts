@@ -22,6 +22,7 @@ return {
 				"typescript",
 				"sql",
 				"css",
+				"python",
 			},
 			auto_install = false,
 			highlight = {

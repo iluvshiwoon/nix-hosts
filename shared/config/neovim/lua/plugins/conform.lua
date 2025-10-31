@@ -11,7 +11,15 @@ return {
 			typescript = { "prettier" },
 			sql = { "pg_format" }, -- Note: nix package is pgformatter, but command is pg_format
 			lua = { "stylua" },
-			nix = { "alejandra -- " },
+			nix = { "alejandra" },
+			python = {
+				-- To fix auto-fixable lint errors.
+				"ruff_fix",
+				-- To run the Ruff formatter.
+				"ruff_format",
+				-- To organize the imports.
+				"ruff_organize_imports",
+			},
 		},
 		format_on_save = {
 			timeout_ms = 500,
