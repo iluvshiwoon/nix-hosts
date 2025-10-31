@@ -1,3 +1,4 @@
+-- neovim/lsp/basedpyright.lua
 return {
 	cmd = { "basedpyright-langserver", "--stdio" },
 	filetypes = { "python" },
@@ -5,10 +6,8 @@ return {
 	settings = {
 		python = {
 			analysis = {
-				-- These help find your venv and libraries
 				autoSearchPaths = true,
 				useLibraryCodeForTypes = true,
-				-- This tells it to analyze the whole project, not just open files
 				diagnosticMode = "workspace",
 			},
 		},
