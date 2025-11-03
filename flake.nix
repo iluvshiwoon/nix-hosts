@@ -14,6 +14,7 @@
   };
 
   inputs = {
+		nixgl.url = "github:nix-community/nixGL";
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     neovim-nightly-overlay.url = "github:nix-community/neovim-nightly-overlay";
     zen-browser.url = "github:youwen5/zen-browser-flake";
@@ -85,6 +86,7 @@
     home-manager,
     nixpkgs,
     disko,
+    nixgl,
     ...
   } @ inputs: let
     inherit (self) outputs;
@@ -233,7 +235,7 @@
             {
               name = machine.username;
               value = home-manager.lib.homeManagerConfiguration {
-                pkgs = nixpkgs.legacyPackages.${machine.system};
+                pkgs = nixpkgs.legacyPackages.${machine.system}.extend nixgl.overlay;
                 extraSpecialArgs = {
                   inherit inputs outputs;
                   username = machine.username;
