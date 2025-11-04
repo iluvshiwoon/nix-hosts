@@ -27,6 +27,8 @@
       clang
 
       python3
+      python3Packages.uv
+      bootdev-cli
       nodejs_latest
       bun
     ]
