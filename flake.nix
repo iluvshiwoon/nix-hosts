@@ -30,6 +30,10 @@
       url = "github:sveltejs/mcp";
       flake = false;
     };
+    aerospace-tap = {
+      url = "github:nikitabobko/homebrew-tap";
+      flake = false;
+    };
     chromeMcp = {
       url = "github:ChromeDevTools/chrome-devtools-mcp";
       flake = false;
@@ -175,6 +179,7 @@
                     "iluvshiwoon/homebrew-additional" = inputs.homebrew-additional;
                     "mongodb/homebrew-brew" = inputs.homebrew-mongodb;
                     "d12frosted/homebrew-emacs-plus" = inputs.homebrew-emacs-plus;
+                    "nikitabobko/homebrew-tap" = inputs.aerospace-tap;
                   };
                   mutableTaps = false;
                   autoMigrate = true;

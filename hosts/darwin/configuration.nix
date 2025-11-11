@@ -118,6 +118,7 @@
       "tor-browser"
       "google-chrome"
       "iluvshiwoon/homebrew-additional/ryujinx"
+      "aerospace"
     ];
   };
 

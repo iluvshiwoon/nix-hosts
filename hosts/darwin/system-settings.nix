@@ -19,6 +19,7 @@
         minimize-to-application = true;
         mineffect = "scale";
         launchanim = false;
+        expose-group-apps = true;
 
         # corner actions
         wvous-bl-corner = 1; #disabled
