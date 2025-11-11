@@ -101,11 +101,13 @@
       "mas"
       "fzf"
       "gemini-cli"
+      "emacs-plus"
     ];
 
     # `brew install --cask`
     casks = [
-    "helium-browser"
+      "helium-browser"
+      "obsidian"
       "actual"
       "docker-desktop"
       "ghostty"

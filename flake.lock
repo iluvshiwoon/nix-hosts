@@ -182,6 +182,22 @@
         "type": "github"
       }
     },
+    "homebrew-emacs-plus": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1762005821,
+        "narHash": "sha256-M24JpkYH7xdrm7Uine17wrmnpszfhCn9dBhw13Yt69Q=",
+        "owner": "d12frosted",
+        "repo": "homebrew-emacs-plus",
+        "rev": "89952793a1226de8b47dd6269806693713178b84",
+        "type": "github"
+      },
+      "original": {
+        "owner": "d12frosted",
+        "repo": "homebrew-emacs-plus",
+        "type": "github"
+      }
+    },
     "homebrew-mongodb": {
       "flake": false,
       "locked": {
@@ -375,6 +391,7 @@
         "homebrew-additional": "homebrew-additional",
         "homebrew-cask": "homebrew-cask",
         "homebrew-core": "homebrew-core",
+        "homebrew-emacs-plus": "homebrew-emacs-plus",
         "homebrew-mongodb": "homebrew-mongodb",
         "nanobanana": "nanobanana",
         "neovim-nightly-overlay": "neovim-nightly-overlay",

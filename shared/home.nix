@@ -12,10 +12,19 @@
     ./programs
   ];
 
+  home.file = {
+    ".emacs.d/" = {
+      source = ../shared/config/emacs.d;
+      recursive = true;
+    };
+  };
+
   programs.neovim.nvimdots = {
     enable = true;
     mergeLazyLock = true;
   };
+
+  nixpkgs.config.allowUnfree = true;
 
   home.packages = with pkgs;
     [
@@ -59,10 +68,9 @@
 
     initContent = let
       zshInitExtra = lib.mkBefore ''
-        export PATH=~/.config/emacs/bin:$PATH
-             DISABLE_MAGIC_FUNCTIONS=true
-             export "MICRO_TRUECOLOR=1"
-             eval "$(zoxide init --cmd cd zsh)"
+        DISABLE_MAGIC_FUNCTIONS=true
+        export "MICRO_TRUECOLOR=1"
+        eval "$(zoxide init --cmd cd zsh)"
       '';
       zshInit = ''
         flakify () {

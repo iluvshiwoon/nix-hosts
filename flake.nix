@@ -14,7 +14,7 @@
   };
 
   inputs = {
-		nixgl.url = "github:nix-community/nixGL";
+    nixgl.url = "github:nix-community/nixGL";
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     neovim-nightly-overlay.url = "github:nix-community/neovim-nightly-overlay";
     zen-browser.url = "github:youwen5/zen-browser-flake";
@@ -27,16 +27,16 @@
       flake = false;
     };
     svelteMcp = {
-    	url = "github:sveltejs/mcp";
-	flake = false;
+      url = "github:sveltejs/mcp";
+      flake = false;
     };
     chromeMcp = {
-    	url = "github:ChromeDevTools/chrome-devtools-mcp";
-	flake = false;
+      url = "github:ChromeDevTools/chrome-devtools-mcp";
+      flake = false;
     };
     nanobanana = {
-    	url = "github:gemini-cli-extensions/nanobanana";
-	flake = false;
+      url = "github:gemini-cli-extensions/nanobanana";
+      flake = false;
     };
     prettier-with-plugins = {
       url = "github:nix-utilities/prettier-with-plugins";
@@ -57,6 +57,10 @@
     };
     homebrew-core = {
       url = "github:homebrew/homebrew-core";
+      flake = false;
+    };
+    homebrew-emacs-plus = {
+      url = "github:d12frosted/homebrew-emacs-plus";
       flake = false;
     };
     homebrew-additional = {
@@ -170,6 +174,7 @@
                     "homebrew/homebrew-cask" = inputs.homebrew-cask;
                     "iluvshiwoon/homebrew-additional" = inputs.homebrew-additional;
                     "mongodb/homebrew-brew" = inputs.homebrew-mongodb;
+                    "d12frosted/homebrew-emacs-plus" = inputs.homebrew-emacs-plus;
                   };
                   mutableTaps = false;
                   autoMigrate = true;
