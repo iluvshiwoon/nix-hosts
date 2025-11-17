@@ -25,15 +25,21 @@
   };
 
   nixpkgs.config.allowUnfree = true;
+  fonts.fontconfig.enable = true;
 
   home.packages = with pkgs;
     [
+      jetbrains-mono
+      source-sans-pro
+
       man-pages
       nix-prefetch-git
       fzf
       cmake
       gnumake
       clang
+      fd
+      ripgrep
 
       python3
       python3Packages.uv
