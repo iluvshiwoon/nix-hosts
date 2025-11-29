@@ -1,10 +1,11 @@
 {
-	inputs,
-		pkgs,
-		...
+  inputs,
+  pkgs,
+  ...
 }: {
-home.packages = [
-inputs.zen-browser.packages.${pkgs.system}.default
-	  pkgs.nixgl.nixGLIntel
-];
+  nixpkgs.config.allowUnfree = true;
+  home.packages = [
+    inputs.zen-browser.packages.${pkgs.system}.default
+    pkgs.nixgl.nixGLIntel
+  ];
 }

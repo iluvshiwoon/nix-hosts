@@ -1,65 +1,47 @@
-_: {
-  disko.devices = {
-    disk = {
-      nvme0n1 = {
-        type = "disk";
-        device = "/dev/nvme0n1";
-        content = {
-          type = "gpt";
-          partitions = {
-            # EFI System Partition for UEFI boot
-            ESP = {
-              size = "1G";
-              type = "EF00";
-              content = {
-                type = "filesystem";
-                format = "vfat";
-                mountpoint = "/boot";
-                mountOptions = ["umask=0077"];
-              };
-            };
-
-            # Swap partition - 4GB for 12GB RAM
-            swap = {
-              size = "4G";
-              content = {
-                type = "swap";
-                randomEncryption = true;
-              };
-            };
-
-            # Root partition - remaining space
-            root = {
-              size = "100%";
-              content = {
-                type = "filesystem";
-                format = "ext4";
+{
+  disko.devices.disk.main = {
+    # 1. Use /dev/vda (VirtIO Block). It is faster than emulated NVMe.
+    device = "/dev/vda";
+    type = "disk";
+    content = {
+      type = "gpt";
+      partitions = {
+        ESP = {
+          priority = 1;
+          name = "ESP";
+          start = "1M";
+          end = "512M";
+          type = "EF00";
+          content = {
+            type = "filesystem";
+            format = "vfat";
+            mountpoint = "/boot";
+            # 2. MANDATORY: Security hygiene. Only root can read the bootloader.
+            mountOptions = ["umask=0077"];
+          };
+        };
+        root = {
+          size = "100%";
+          content = {
+            type = "btrfs";
+            extraArgs = ["-f"];
+            subvolumes = {
+              "@" = {
                 mountpoint = "/";
-                mountOptions = [
-                  "noatime"
-                  "discard"
-                ];
+                mountOptions = ["compress=zstd" "noatime"];
+              };
+              "@home" = {
+                mountpoint = "/home";
+                mountOptions = ["compress=zstd" "noatime"];
+              };
+              "@nix" = {
+                mountpoint = "/nix";
+                mountOptions = ["compress=zstd" "noatime"];
               };
             };
           };
         };
       };
-    };
-  };
-
-  # Filesystem configurations
-  fileSystems = {
-    # Large tmpfs for better performance with 12GB RAM
-    "/tmp" = {
-      fsType = "tmpfs";
-      options = ["size=2G" "nodev" "nosuid"];
-    };
-
-    # VirtioFS shared folder (Apple Virtualization)
-    "/media/shared" = {
-      fsType = "virtiofs";
-      device = "share";
-      options = ["rw" "nofail"];
     };
   };
 }

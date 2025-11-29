@@ -15,6 +15,7 @@
   # ] ++ (builtins.attrValues outputs.darwinModules); # list: value of attr in set
 
   ids.gids.nixbld = 350;
+  services.tailscale.enable = true;
 
   nixpkgs = {
     # You can add overlays here

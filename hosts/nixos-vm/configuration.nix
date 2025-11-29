@@ -6,16 +6,14 @@
   username,
   hostname,
   ...
-}: let
-  user = "${username}";
-in {
+}: {
   # Start with this simple test
   imports = [
     ./disk-config.nix
     # ../modules/shared
   ];
 
-programs.ssh.startAgent = true;
+  programs.ssh.startAgent = true;
   boot = {
     loader = {
       systemd-boot = {
@@ -62,6 +60,7 @@ programs.ssh.startAgent = true;
   services = {
     fstrim.enable = true; # SSD maintenance
     earlyoom.enable = true; # Prevent memory exhaustion
+    getty.autologinUser = "${username}";
   };
 
   # Set your time zone.
@@ -81,13 +80,13 @@ programs.ssh.startAgent = true;
     # nixPath = ["nixos-config=/home/${user}/.local/share/src/nixos-config:/etc/nixos"];
     optimise.automatic = true;
     gc = {
-    	automatic = true;
-	dates = "weekly";
-	options = "--delete-older-than 30d";
+      automatic = true;
+      dates = "weekly";
+      options = "--delete-older-than 30d";
     };
     settings = {
-      allowed-users = ["${user}"];
-      trusted-users = ["@admin" "${user}"];
+      allowed-users = ["${username}"];
+      trusted-users = ["@admin" "${username}"];
       download-buffer-size = 524288000;
     };
 
@@ -105,52 +104,6 @@ programs.ssh.startAgent = true;
 
   virtualisation.rosetta.enable = true;
 
-  services = {
-    desktopManager.plasma6.enable = true;
-    spice-vdagentd.enable = true;
-    displayManager.sddm.wayland.enable = true;
-    displayManager.sddm.enable = true;
-
-    # xserver = {
-    #   enable = false;
-    #
-    #   xkb = {
-    #     # Turn Caps Lock into Ctrl
-    #     layout = "us";
-    #     options = "ctrl:nocaps";
-    #   };
-
-    # Better support for general peripherals
-    libinput.enable = true;
-
-    # Let's be able to SSH into this machine
-    openssh.enable = true;
-
-    # Sync state between machines
-    # syncthing = {
-    #   enable = true;
-    #   openDefaultPorts = true;
-    #   dataDir = "/home/${user}/.local/share/syncthing";
-    #   configDir = "/home/${user}/.config/syncthing";
-    #   user = "${user}";
-    #   group = "users";
-    #   guiAddress = "127.0.0.1:8384";
-    #   overrideFolders = true;
-    #   overrideDevices = true;
-    #
-    #   settings = {
-    #     devices = {};
-    #     options.globalAnnounceEnabled = false; # Only sync on LAN
-    #   };
-    # };
-
-    #   # Emacs runs as a daemon
-    #   emacs = {
-    #     enable = true;
-    #     package = pkgs.emacs-unstable;
-    #   };
-  };
-
   # When emacs builds from no cache, it exceeds the 90s timeout default
   # systemd.user.services.emacs = {
   # serviceConfig.TimeoutStartSec = "7min";
@@ -165,12 +118,19 @@ programs.ssh.startAgent = true;
     # pulseaudio.enable = true;
   };
 
+  services.openssh.enable = true;
+
   # It's me, it's you, it's everyone
   users.users = {
-    ${user} = {
+    ${username} = {
+      openssh.authorizedKeys.keys = [
+        "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKSOJB4R4blxZYxCnAdcPLeSQhnM9FnxPhv3yWXmcFo8 sntcillian@gmail.com"
+      ];
+      initialHashedPassword = "";
       isNormalUser = true;
       extraGroups = [
         "wheel" # Enable ‘sudo’ for the user.
+        "networkmanager"
         "docker"
       ];
       shell = pkgs.zsh;
@@ -185,17 +145,7 @@ programs.ssh.startAgent = true;
   # Don't require password for users in `wheel` group for these commands
   security.sudo = {
     enable = true;
-    extraRules = [
-      {
-        commands = [
-          {
-            command = "${pkgs.systemd}/bin/reboot";
-            options = ["NOPASSWD"];
-          }
-        ];
-        groups = ["wheel"];
-      }
-    ];
+    wheelNeedsPassword = false;
   };
 
   fonts.packages = with pkgs; [
@@ -204,7 +154,7 @@ programs.ssh.startAgent = true;
     jetbrains-mono
     font-awesome
     noto-fonts
-    noto-fonts-emoji
+    noto-fonts-color-emoji
   ];
 
   environment.systemPackages = with pkgs; [

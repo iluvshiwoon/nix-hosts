@@ -22,6 +22,7 @@
       url = "github:loichyan/tmux-toggle-popup";
       flake = false;
     };
+    nixos-facter-modules.url = "github:numtide/nixos-facter-modules";
     upstash-context7 = {
       url = "github:upstash/context7";
       flake = false;
@@ -94,6 +95,7 @@
     home-manager,
     nixpkgs,
     disko,
+    nixos-facter-modules,
     nixgl,
     ...
   } @ inputs: let
@@ -156,16 +158,17 @@
     darwinConfigurations = builtins.listToAttrs (
       builtins.map (machineName: let
         machine = machines.${machineName};
+        mySpecialArgs = {
+          inherit inputs outputs;
+          username = machine.username;
+          hostname = machine.hostname;
+          machineConfig = machine;
+        };
       in {
         name = machine.hostname;
         value = darwin.lib.darwinSystem {
           system = machine.system;
-          specialArgs = {
-            inherit inputs outputs;
-            username = machine.username;
-            hostname = machine.hostname;
-            machineConfig = machine;
-          };
+          specialArgs = mySpecialArgs;
           modules =
             [
               inputs.nix-homebrew.darwinModules.nix-homebrew
@@ -185,6 +188,18 @@
                   autoMigrate = true;
                 };
               }
+              inputs.home-manager.darwinModules.home-manager
+              {
+                home-manager.useGlobalPkgs = true;
+                home-manager.useUserPackages = true;
+                home-manager.extraSpecialArgs = mySpecialArgs;
+                home-manager.users.${machine.username} = {
+                  imports = [
+                    ./shared/home.nix
+                    ./${machine.hostPath}/home.nix
+                  ];
+                };
+              }
             ]
             ++ createMachineModules machine;
         };
@@ -195,19 +210,34 @@
     nixosConfigurations = builtins.listToAttrs (
       builtins.map (machineName: let
         machine = machines.${machineName};
+        mySpecialArgs = {
+          inherit inputs outputs;
+          username = machine.username;
+          hostname = machine.hostname;
+          machineConfig = machine;
+        };
       in {
         name = machine.hostname;
         value = nixpkgs.lib.nixosSystem {
           system = machine.system;
-          specialArgs = {
-            inherit inputs outputs;
-            username = machine.username;
-            hostname = machine.hostname;
-            machineConfig = machine;
-          };
+          specialArgs = mySpecialArgs;
           modules =
             [
               disko.nixosModules.disko
+              nixos-facter-modules.nixosModules.facter
+              {config.facter.reportPath = ./hosts/nixos-vm/facter.json;}
+              inputs.home-manager.nixosModules.home-manager
+              {
+                home-manager.useGlobalPkgs = true;
+                home-manager.useUserPackages = true;
+                home-manager.extraSpecialArgs = mySpecialArgs;
+                home-manager.users.${machine.username} = {
+                  imports = [
+                    ./shared/home.nix
+                    ./${machine.hostPath}/home.nix
+                  ];
+                };
+              }
             ]
             ++ createMachineModules machine;
         };
