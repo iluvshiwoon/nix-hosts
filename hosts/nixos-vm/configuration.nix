@@ -86,7 +86,7 @@
     };
     settings = {
       allowed-users = ["${username}"];
-      trusted-users = ["@admin" "${username}"];
+      trusted-users = ["root" "@wheel" "${username}"];
       download-buffer-size = 524288000;
     };
 

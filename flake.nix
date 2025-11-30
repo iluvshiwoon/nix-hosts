@@ -43,10 +43,7 @@
       url = "github:gemini-cli-extensions/nanobanana";
       flake = false;
     };
-    prettier-with-plugins = {
-      url = "github:nix-utilities/prettier-with-plugins";
-      flake = false;
-    };
+
     home-manager = {
       url = "github:nix-community/home-manager/master";
       inputs.nixpkgs.follows = "nixpkgs";
