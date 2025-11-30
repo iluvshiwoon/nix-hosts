@@ -7,7 +7,7 @@
   ...
 }: {
   imports = [
-    # outputs.homeManagerModules.neovim
+    outputs.homeManagerModules.neovim
     outputs.homeManagerModules.gemini
     ./programs
   ];
@@ -19,10 +19,10 @@
     };
   };
 
-  # programs.neovim.nvimdots = {
-  #   enable = true;
-  #   mergeLazyLock = true;
-  # };
+  programs.neovim.nvimdots = {
+    enable = true;
+    mergeLazyLock = true;
+  };
 
   fonts.fontconfig.enable = true;
 
